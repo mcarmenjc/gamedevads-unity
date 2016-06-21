@@ -82,7 +82,14 @@ public class CameraRaycasting : MonoBehaviour {
 			{
 				_runningTime = 0f;
 				_lastSelectedObject.GetComponent<Renderer> ().material.color = Color.red;
-				Debug.Log("preload");
+				Debug.Log(Application.loadedLevelName);
+				try { //WTF
+					PlayerPrefs.SetString("originScene", Application.loadedLevelName);
+					Debug.Log("!!!!!!: "+PlayerPrefs.GetString("originScene"));
+				} catch (PlayerPrefsException e) {
+					Debug.Log (e.Message);
+				}
+
 				StartCoroutine (LoadAssetBundles ());
 			}
 		} else {
@@ -128,8 +135,9 @@ public class CameraRaycasting : MonoBehaviour {
 				foreach (string scenePath in scenePaths) {
 					Debug.Log (scenePath);
 				}
-				Application.LoadLevel ("advert");
-
+				UnityEngine.SceneManagement.SceneManager.LoadScene("advert");
+				UnityEngine.SceneManagement.SceneManager.SetActiveScene(
+					UnityEngine.SceneManagement.SceneManager.GetSceneByName("advert"));
 			}
 			// Unload the AssetBundles compressed contents to conserve memory
 			//WTF causing camera problem
