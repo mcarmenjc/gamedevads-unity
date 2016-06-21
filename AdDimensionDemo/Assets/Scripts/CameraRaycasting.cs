@@ -9,7 +9,7 @@ public class CameraRaycasting : MonoBehaviour {
 
 	private Transform _camera;
 	private GameObject _lastSelectedObject;
-	private float _mainSpeed = 10.0f; //regular speed
+	private float _mainSpeed = 2.0f; //regular speed
 	private float _shiftAdd = 250.0f; //multiplied by how long shift is held.  Basically running
 	private float _maxShift = 1000.0f; //Maximum speed when holdin gshift
 	private float _camSens = 0.25f; //How sensitive it with mouse
@@ -59,15 +59,11 @@ public class CameraRaycasting : MonoBehaviour {
 
 		p = p * Time.deltaTime;
 		Vector3 newPosition = transform.position;
-		if (Input.GetKey(KeyCode.Space)){ //If player wants to move on X and Z axis only
-			transform.Translate(p);
-			newPosition.x = transform.position.x;
-			newPosition.z = transform.position.z;
-			transform.position = newPosition;
-		}
-		else{
-			transform.Translate(p);
-		}
+		transform.Translate(p);
+		newPosition.x = transform.position.x;
+		newPosition.z = transform.position.z;
+		transform.position = newPosition;
+
 	}
 		
 	private void EyeRaycast()
