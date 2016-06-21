@@ -4,10 +4,12 @@ using System.Collections;
 public class CameraRaycasting : MonoBehaviour {
 
 	private Transform _camera;
+	private GameObject _lastSelectedObject;
 
 	private void Start()
 	{
 		_camera = GetComponent<Transform> ();
+		_lastSelectedObject = null;
 	}
 
 	private void Update()
@@ -28,15 +30,15 @@ public class CameraRaycasting : MonoBehaviour {
 		
 	private void EyeRaycast()
 	{
-		Debug.DrawRay(_camera.position, _camera.forward * 100, Color.blue, 1);
 		RaycastHit hit;
-		// Create a ray from the transform position along the transform's z-axis
 		Ray ray = new Ray(_camera.position, _camera.forward);
-		if (Physics.Raycast (ray, out hit)) 
-		{
-			Debug.Log ("HIT 3D");
-			GameObject selectedObject = hit.transform.gameObject;
-			selectedObject.GetComponent<Renderer> ().material.color = Color.red;
+		if (Physics.Raycast (ray, out hit)) {
+			_lastSelectedObject = hit.transform.gameObject;
+			_lastSelectedObject.GetComponent<Renderer> ().material.color = Color.red;
+		} else {
+			if (_lastSelectedObject != null) {
+				_lastSelectedObject.GetComponent<Renderer> ().material.color = Color.white;
+			}
 		}
 	}
 }
