@@ -16,6 +16,7 @@ public class CameraRaycasting : MonoBehaviour {
 	private Vector3 _lastMouse = new Vector3(255, 255, 255); //kind of in the middle of the screen, rather than at the top (play)
 	private float _totalRun= 1.0f;
 	private float _lockTime = 2.0f;
+	private float _impressionTime = 1.0f;
 	private float _runningTime = 0f;
 
 	private void Start()
@@ -74,6 +75,14 @@ public class CameraRaycasting : MonoBehaviour {
 			_lastSelectedObject = hit.transform.gameObject;
 			_runningTime += Time.deltaTime * 1;
 
+			LoadBanner loadBanner = _lastSelectedObject.GetComponent<LoadBanner> ();
+			if (_lastSelectedObject.tag.Contains ("AdSurface")) {
+				loadBanner.RegisterImpression ();
+			}
+
+			if (_runningTime >= _impressionTime) {
+				
+			}
 			if (_runningTime >= _lockTime) {
 				_runningTime = 0f;
 				_lastSelectedObject.GetComponent<Renderer> ().material.color = Color.red;
@@ -85,8 +94,8 @@ public class CameraRaycasting : MonoBehaviour {
 					Debug.Log (e.Message);
 				}
 				if (_lastSelectedObject.tag.Contains ("AdSurface")) {
-					LoadBanner loadBanner = _lastSelectedObject.GetComponent<LoadBanner> ();
 					Url = loadBanner.clickThrough;
+					loadBanner.RegisterClickThrough ();
 				}
 				StartCoroutine (LoadAssetBundles ());
 			} else {

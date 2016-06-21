@@ -9,19 +9,15 @@ using System.IO;
 
 public class LoadBanner : MonoBehaviour {
 
-
 	public string clickThrough = "";
 	public string jsonUrl = "";
+	public string impressionUrl = "";
+	public string clickRecordingUrl = "";
 
 	void Start () {
 		string url = jsonUrl;
 		WWW www = new WWW(jsonUrl);
 		StartCoroutine(WaitForJSON(www));
-	}
-
-	void Update() {
-		//TODO: Implement 'Click on gaze'
-		//Debug.Log(clickThrough);
 	}
 
 	IEnumerator WaitForJSON(WWW www)
@@ -54,5 +50,22 @@ public class LoadBanner : MonoBehaviour {
 		} else {
 			Debug.Log("WWW Error: "+ www.error);
 		}    
+	}
+
+	IEnumerator WaitForGeneralRequest(WWW www)
+	{
+		yield return www;
+	}
+
+	public void RegisterImpression()
+	{
+		WWW www = new WWW(impressionUrl);
+		WaitForGeneralRequest(www);
+	}
+
+	public void RegisterClickThrough()
+	{
+		WWW www = new WWW(clickRecordingUrl);
+		WaitForGeneralRequest(www);
 	}
 }
