@@ -135,9 +135,7 @@ public class CameraRaycasting : MonoBehaviour {
 				foreach (string scenePath in scenePaths) {
 					Debug.Log (scenePath);
 				}
-				UnityEngine.SceneManagement.SceneManager.LoadScene("advert");
-				UnityEngine.SceneManagement.SceneManager.SetActiveScene(
-					UnityEngine.SceneManagement.SceneManager.GetSceneByName("advert"));
+				UnityEngine.SceneManagement.SceneManager.LoadScene("CarAdvert");
 			}
 			// Unload the AssetBundles compressed contents to conserve memory
 			//WTF causing camera problem
