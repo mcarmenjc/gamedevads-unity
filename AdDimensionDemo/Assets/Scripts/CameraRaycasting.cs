@@ -74,19 +74,20 @@ public class CameraRaycasting : MonoBehaviour {
 			_lastSelectedObject = hit.transform.gameObject;
 			_runningTime += Time.deltaTime * 1;
 
-			if( _runningTime >= _lockTime)
-			{
+			if (_runningTime >= _lockTime) {
 				_runningTime = 0f;
 				_lastSelectedObject.GetComponent<Renderer> ().material.color = Color.red;
-				Debug.Log(Application.loadedLevelName);
+				Debug.Log (Application.loadedLevelName);
 				try { //WTF
-					PlayerPrefs.SetString("originScene", Application.loadedLevelName);
-					Debug.Log("!!!!!!: "+PlayerPrefs.GetString("originScene"));
+					PlayerPrefs.SetString ("originScene", Application.loadedLevelName);
+					Debug.Log ("!!!!!!: " + PlayerPrefs.GetString ("originScene"));
 				} catch (PlayerPrefsException e) {
 					Debug.Log (e.Message);
 				}
 
 				StartCoroutine (LoadAssetBundles ());
+			} else {
+				_lastSelectedObject.GetComponent<Renderer> ().material.color = Color.white;
 			}
 		} else {
 			_runningTime = 0f;
