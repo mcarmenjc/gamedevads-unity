@@ -84,7 +84,10 @@ public class CameraRaycasting : MonoBehaviour {
 				} catch (PlayerPrefsException e) {
 					Debug.Log (e.Message);
 				}
-
+				if (_lastSelectedObject.tag.Contains ("AdSurface")) {
+					LoadBanner loadBanner = _lastSelectedObject.GetComponent<LoadBanner> ();
+					Url = loadBanner.clickThrough;
+				}
 				StartCoroutine (LoadAssetBundles ());
 			} else {
 				_lastSelectedObject.GetComponent<Renderer> ().material.color = Color.white;
@@ -132,7 +135,7 @@ public class CameraRaycasting : MonoBehaviour {
 				foreach (string scenePath in scenePaths) {
 					Debug.Log (scenePath);
 				}
-				UnityEngine.SceneManagement.SceneManager.LoadScene("CarAdvert");
+				UnityEngine.SceneManagement.SceneManager.LoadScene("advert");
 			}
 			// Unload the AssetBundles compressed contents to conserve memory
 			//WTF causing camera problem
