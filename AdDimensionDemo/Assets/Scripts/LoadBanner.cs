@@ -1,19 +1,58 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Net;
+using System.IO;
+using UnityEngine;
+using System.Collections;
+using System.Net;
+using System.IO;
 
-// Get the latest webcam shot from outside "Friday's" in Times Square
 public class LoadBanner : MonoBehaviour {
-	public string url = "http://usrtk.org/wp-content/uploads/2015/12/coca-cola.jpg";
 
-	IEnumerator Start() {
-		// Start a download of the given URL
-		WWW www = new WWW(url);
 
-		// Wait for download to complete
+	public string clickThrough = "";
+	public string jsonUrl = "";
+
+	void Start () {
+		string url = jsonUrl;
+		WWW www = new WWW(jsonUrl);
+		StartCoroutine(WaitForJSON(www));
+	}
+
+	void Update() {
+		//TODO: Implement 'Click on gaze'
+		//Debug.Log(clickThrough);
+	}
+
+	IEnumerator WaitForJSON(WWW www)
+	{
 		yield return www;
 
-		// assign texture
-		Renderer renderer = GetComponent<Renderer>();
-		renderer.material.mainTexture = www.texture;
+		// check for errors
+		if (www.error == null)
+		{
+			AdSurfaceData adSurfaceData = AdSurfaceData.CreateFromJSON (www.data);
+			Debug.Log (adSurfaceData.uriImage);
+			WWW imageWWW = new WWW(adSurfaceData.uriImage);
+			StartCoroutine(WaitForImage(imageWWW));
+			this.clickThrough = adSurfaceData.uriAction;
+		} else {
+			Debug.Log("WWW Error: "+ www.error);
+		}    
+	}
+
+	IEnumerator WaitForImage(WWW www)
+	{
+		yield return www;
+
+		// check for errors
+		if (www.error == null)
+		{
+			Renderer renderer = GetComponent<Renderer>();
+			renderer.material.mainTexture = www.texture;
+
+		} else {
+			Debug.Log("WWW Error: "+ www.error);
+		}    
 	}
 }
