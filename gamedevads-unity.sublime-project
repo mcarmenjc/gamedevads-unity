@@ -1,0 +1,26 @@
+{
+	"folders":
+	[
+		{
+			"file_exclude_patterns":
+			[
+				"*.sublime-project",
+				"*.mp4",
+				"*.mat"
+			],
+			"folder_exclude_patterns":
+			[
+				".git",
+				"Library",
+				"Temp",
+				"Obj",
+				"obj",
+				"Build",
+				"Builds",
+				"Assets/AssetStoreTools",
+				"ProjectSettings"
+			],
+			"path": "."
+		}
+	]
+}
