@@ -5,6 +5,6 @@ public class CreateAssetBundles
 	[MenuItem ("Assets/Build AssetBundles")]
 	static void BuildAllAssetBundles ()
 	{
-		BuildPipeline.BuildAssetBundles ("Assets/Scenes", BuildAssetBundleOptions.None, BuildTarget.StandaloneOSXUniversal);
+		BuildPipeline.BuildAssetBundles ("Assets/Build/AssetBundles", BuildAssetBundleOptions.None, BuildTarget.StandaloneOSXUniversal);
 	}
 }
