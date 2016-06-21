@@ -11,11 +11,14 @@ public class CameraRaycasting : MonoBehaviour {
 	private float _camSens = 0.25f; //How sensitive it with mouse
 	private Vector3 _lastMouse = new Vector3(255, 255, 255); //kind of in the middle of the screen, rather than at the top (play)
 	private float _totalRun= 1.0f;
+	private float _lockTime = 2.0f;
+	private float _runningTime = 0f;
 
 	private void Start()
 	{
 		_camera = GetComponent<Transform> ();
 		_lastSelectedObject = null;
+		_runningTime = 0f;
 	}
 
 	private void Update()
@@ -67,8 +70,15 @@ public class CameraRaycasting : MonoBehaviour {
 		Ray ray = new Ray(_camera.position, _camera.forward);
 		if (Physics.Raycast (ray, out hit)) {
 			_lastSelectedObject = hit.transform.gameObject;
-			_lastSelectedObject.GetComponent<Renderer> ().material.color = Color.red;
+			_runningTime += Time.deltaTime * 1;
+
+			if( _runningTime >= _lockTime)
+			{
+				_runningTime = 0f;
+				_lastSelectedObject.GetComponent<Renderer> ().material.color = Color.red;
+			}
 		} else {
+			_runningTime = 0f;
 			if (_lastSelectedObject != null) {
 				_lastSelectedObject.GetComponent<Renderer> ().material.color = Color.white;
 			}
