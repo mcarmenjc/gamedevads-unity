@@ -36,6 +36,7 @@ public class CameraRaycasting : MonoBehaviour {
 		{
 			Debug.Log ("HIT 3D");
 			GameObject selectedObject = hit.transform.gameObject;
+			selectedObject.GetComponent<Renderer> ().material.color = Color.red;
 		}
 	}
 }
