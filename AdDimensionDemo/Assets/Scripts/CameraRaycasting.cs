@@ -1,7 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System;
 
 public class CameraRaycasting : MonoBehaviour {
+
+	public string Url;
+	public string AssetName = "advert";
 
 	private Transform _camera;
 	private GameObject _lastSelectedObject;
@@ -76,6 +80,8 @@ public class CameraRaycasting : MonoBehaviour {
 			{
 				_runningTime = 0f;
 				_lastSelectedObject.GetComponent<Renderer> ().material.color = Color.red;
+				Debug.Log("preload");
+				StartCoroutine (LoadAssetBundles ());
 			}
 		} else {
 			_runningTime = 0f;
@@ -100,5 +106,32 @@ public class CameraRaycasting : MonoBehaviour {
 			p_Velocity += new Vector3(1, 0, 0);
 		}
 		return p_Velocity;
+	}
+
+	private IEnumerator LoadAssetBundles() {
+		Debug.Log ("LoadAssetBundles triggered");
+		Debug.Log (AssetName);
+		Debug.Log (this.Url);
+		// Download the file from the URL. It will not be saved in the Cache
+		using (WWW www = new WWW(this.Url)) {
+			yield return www;
+			if (www.error != null)
+				throw new Exception("WWW download had an error:" + www.error);
+			AssetBundle bundle = www.assetBundle;
+			if (AssetName == "")
+				Instantiate (bundle.mainAsset);
+			else {
+
+				string[] scenePaths = bundle.GetAllScenePaths ();
+				foreach (string scenePath in scenePaths) {
+					Debug.Log (scenePath);
+				}
+				Application.LoadLevel ("advert");
+
+			}
+			// Unload the AssetBundles compressed contents to conserve memory
+			bundle.Unload(false);
+
+		} // memory is freed from the web stream (www.Dispose() gets called implicitly)
 	}
 }
