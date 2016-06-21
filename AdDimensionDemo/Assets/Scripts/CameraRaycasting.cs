@@ -21,6 +21,8 @@ public class CameraRaycasting : MonoBehaviour {
 	private void Start()
 	{
 		_camera = GetComponent<Transform> ();
+		Debug.Log ("LOBBY");
+		Debug.Log (_camera.position);
 		_lastSelectedObject = null;
 		_runningTime = 0f;
 	}
@@ -130,7 +132,8 @@ public class CameraRaycasting : MonoBehaviour {
 
 			}
 			// Unload the AssetBundles compressed contents to conserve memory
-			bundle.Unload(false);
+			//WTF causing camera problem
+			//bundle.Unload(false);
 
 		} // memory is freed from the web stream (www.Dispose() gets called implicitly)
 	}
