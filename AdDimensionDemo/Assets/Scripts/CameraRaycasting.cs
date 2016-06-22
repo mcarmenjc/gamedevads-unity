@@ -19,7 +19,7 @@ public class CameraRaycasting : MonoBehaviour {
 	private float _camSens = 0.25f; //How sensitive it with mouse
 	private Vector3 _lastMouse = new Vector3(255, 255, 255); //kind of in the middle of the screen, rather than at the top (play)
 	private float _totalRun= 1.0f;
-	private float _lockTime = 2.0f;
+	private float _lockTime = 1.0f;
 	private float _impressionTime = 3.0f;
 	private float _runningTime = 0f;
 	private bool _assetLoaded = false;
@@ -127,6 +127,7 @@ public class CameraRaycasting : MonoBehaviour {
 			sceneName = loadBanner.sceneName;
 			loadBanner.RegisterClickThrough ();
 		}
+		Caching.CleanCache();
 		StartCoroutine (LoadAssetBundles ());
 	}
 

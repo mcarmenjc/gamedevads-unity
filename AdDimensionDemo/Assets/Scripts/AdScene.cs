@@ -4,7 +4,7 @@ using System.Collections;
 public class AdScene : MonoBehaviour {
 
 	private float _totalRun= 1.0f;
-	private float _lockTime = 5.0f;
+	private float _lockTime = 10.0f;
 	private float _runningTime = 0f;
 
 	// Use this for initialization
