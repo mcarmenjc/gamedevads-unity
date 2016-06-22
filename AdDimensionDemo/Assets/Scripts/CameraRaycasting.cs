@@ -3,6 +3,7 @@ using System.Collections;
 using System;
 using AdDimension.Helpers;
 using UnityEngine.SceneManagement;
+//using Input = Moga_Input;
 
 public class CameraRaycasting : MonoBehaviour {
 
@@ -30,6 +31,7 @@ public class CameraRaycasting : MonoBehaviour {
 		_lastSelectedObject = null;
 		_runningTime = 0f;
 		_assetLoaded = false;
+		//Input.RegisterMogaController();
 	}
 
 	private void Update()
@@ -83,7 +85,7 @@ public class CameraRaycasting : MonoBehaviour {
 			if (_lastSelectedObject.tag.Contains ("AdSurface")) {
 				loadBanner.RegisterImpression ();
 			}
-			Debug.Log ("dssfdgs");
+
 			if (_runningTime >= _impressionTime && _assetLoaded) {
 				LoadMainScene ();
 			}
@@ -160,7 +162,8 @@ public class CameraRaycasting : MonoBehaviour {
 				throw new Exception("WWW download had an error:" + www.error);
 			AssetBundle bundle = www.assetBundle;
 			if (AssetName == "") {
-				LoadMainScene ();
+				Instantiate (bundle.mainAsset);
+				_assetLoaded = false;
 			}
 			else {
 
