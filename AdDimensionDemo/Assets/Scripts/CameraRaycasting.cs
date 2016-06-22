@@ -8,6 +8,7 @@ using UnityEngine.SceneManagement;
 public class CameraRaycasting : MonoBehaviour {
 
 	public string Url;
+	public string sceneName;
 	public string AssetName = "advert";
 
 	private Transform _camera;
@@ -123,6 +124,7 @@ public class CameraRaycasting : MonoBehaviour {
 		}
 		if (_lastSelectedObject.tag.Contains ("AdSurface")) {
 			Url = loadBanner.clickThrough;
+			sceneName = loadBanner.sceneName;
 			loadBanner.RegisterClickThrough ();
 		}
 		StartCoroutine (LoadAssetBundles ());
@@ -152,6 +154,7 @@ public class CameraRaycasting : MonoBehaviour {
 	}
 
 	private IEnumerator LoadAssetBundles() {
+		Caching.CleanCache();
 		Debug.Log ("LoadAssetBundles triggered");
 		Debug.Log (AssetName);
 		Debug.Log (this.Url);
@@ -171,7 +174,7 @@ public class CameraRaycasting : MonoBehaviour {
 				foreach (string scenePath in scenePaths) {
 					Debug.Log (scenePath);
 				}
-				UnityEngine.SceneManagement.SceneManager.LoadScene("advert");
+				UnityEngine.SceneManagement.SceneManager.LoadScene(sceneName);
 				_assetLoaded = true;
 			}
 		} // memory is freed from the web stream (www.Dispose() gets called implicitly)

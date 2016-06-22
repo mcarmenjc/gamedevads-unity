@@ -12,6 +12,7 @@ public class AdSurfaceData
 	public int dimY;
 	public string uriImage;
 	public string uriAction;
+	public string seName;
 
 	public static AdSurfaceData CreateFromJSON(string jsonString)
 	{

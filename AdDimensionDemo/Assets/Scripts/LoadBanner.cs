@@ -13,6 +13,7 @@ public class LoadBanner : MonoBehaviour {
 	public string jsonUrl = "";
 	public string impressionUrl = "";
 	public string clickRecordingUrl = "";
+	public string sceneName = "";
 
 	void Start () {
 		string url = jsonUrl;
@@ -32,6 +33,7 @@ public class LoadBanner : MonoBehaviour {
 			WWW imageWWW = new WWW(adSurfaceData.uriImage);
 			StartCoroutine(WaitForImage(imageWWW));
 			this.clickThrough = adSurfaceData.uriAction;
+			this.sceneName = adSurfaceData.seName;
 		} else {
 			Debug.Log("WWW Error: "+ www.error);
 		}    
