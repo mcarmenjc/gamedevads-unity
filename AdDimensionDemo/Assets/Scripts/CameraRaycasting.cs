@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System;
-using Input = Moga_Input;
 
 public class CameraRaycasting : MonoBehaviour {
 
@@ -27,7 +26,6 @@ public class CameraRaycasting : MonoBehaviour {
 		Debug.Log (_camera.position);
 		_lastSelectedObject = null;
 		_runningTime = 0f;
-		Input.RegisterMogaController();
 	}
 
 	private void Update()
