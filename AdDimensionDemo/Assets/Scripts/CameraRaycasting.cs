@@ -42,11 +42,11 @@ public class CameraRaycasting : MonoBehaviour {
 
 	private void PollControls()
 	{
-		_lastMouse = Input.mousePosition - _lastMouse ;
-		_lastMouse = new Vector3(-_lastMouse.y * _camSens, _lastMouse.x * _camSens, 0 );
-		_lastMouse = new Vector3(transform.eulerAngles.x + _lastMouse.x , transform.eulerAngles.y + _lastMouse.y, 0);
-		transform.eulerAngles = _lastMouse;
-		_lastMouse =  Input.mousePosition;
+		//_lastMouse = Input.mousePosition - _lastMouse ;
+		//_lastMouse = new Vector3(-_lastMouse.y * _camSens, _lastMouse.x * _camSens, 0 );
+		//_lastMouse = new Vector3(transform.eulerAngles.x + _lastMouse.x , transform.eulerAngles.y + _lastMouse.y, 0);
+		//transform.eulerAngles = _lastMouse;
+		//_lastMouse =  Input.mousePosition;
 		//Mouse  camera angle done.  
 
 		//Keyboard commands
