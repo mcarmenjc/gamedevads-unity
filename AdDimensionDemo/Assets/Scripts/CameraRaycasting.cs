@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System;
+using AdDimension.Helpers;
+using UnityEngine.SceneManagement;
 
 public class CameraRaycasting : MonoBehaviour {
 
@@ -18,6 +20,7 @@ public class CameraRaycasting : MonoBehaviour {
 	private float _lockTime = 2.0f;
 	private float _impressionTime = 1.0f;
 	private float _runningTime = 0f;
+	private bool _assetLoaded = false;
 
 	private void Start()
 	{
@@ -26,6 +29,7 @@ public class CameraRaycasting : MonoBehaviour {
 		Debug.Log (_camera.position);
 		_lastSelectedObject = null;
 		_runningTime = 0f;
+		_assetLoaded = false;
 	}
 
 	private void Update()
@@ -80,24 +84,18 @@ public class CameraRaycasting : MonoBehaviour {
 				loadBanner.RegisterImpression ();
 			}
 
-			if (_runningTime >= _impressionTime) {
-				
-			}
-			if (_runningTime >= _lockTime) {
+			if (_runningTime >= _impressionTime && _assetLoaded) {
+				_assetLoaded = false;
 				_runningTime = 0f;
-				_lastSelectedObject.GetComponent<Renderer> ().material.color = Color.red;
+				SceneManager.LoadScene ("lobby");
+				_camera.position = SavedCamera.Position;
+				_camera.forward = SavedCamera.Direction;
+			}
+			if (_runningTime >= _lockTime && !_assetLoaded) {
+				_runningTime = 0f;
 				Debug.Log (Application.loadedLevelName);
-				try { //WTF
-					PlayerPrefs.SetString ("originScene", Application.loadedLevelName);
-					Debug.Log ("!!!!!!: " + PlayerPrefs.GetString ("originScene"));
-				} catch (PlayerPrefsException e) {
-					Debug.Log (e.Message);
-				}
-				if (_lastSelectedObject.tag.Contains ("AdSurface")) {
-					Url = loadBanner.clickThrough;
-					loadBanner.RegisterClickThrough ();
-				}
-				StartCoroutine (LoadAssetBundles ());
+				SaveCameraData ();
+				StartLoadAssetBundles (loadBanner);
 			} else {
 				_lastSelectedObject.GetComponent<Renderer> ().material.color = Color.white;
 			}
@@ -107,6 +105,27 @@ public class CameraRaycasting : MonoBehaviour {
 				_lastSelectedObject.GetComponent<Renderer> ().material.color = Color.white;
 			}
 		}
+	}
+
+	private void StartLoadAssetBundles(LoadBanner loadBanner)
+	{
+		try { 
+			PlayerPrefs.SetString ("originScene", Application.loadedLevelName);
+			Debug.Log ("!!!!!!: " + PlayerPrefs.GetString ("originScene"));
+		} catch (PlayerPrefsException e) {
+			Debug.Log (e.Message);
+		}
+		if (_lastSelectedObject.tag.Contains ("AdSurface")) {
+			Url = loadBanner.clickThrough;
+			loadBanner.RegisterClickThrough ();
+		}
+		StartCoroutine (LoadAssetBundles ());
+	}
+
+	private void SaveCameraData()
+	{
+		SavedCamera.Position = _camera.position;
+		SavedCamera.Direction = _camera.forward;
 	}
 
 	private Vector3 GetBaseInput() { //returns the basic values, if it's 0 than it's not active.
@@ -136,8 +155,10 @@ public class CameraRaycasting : MonoBehaviour {
 			if (www.error != null)
 				throw new Exception("WWW download had an error:" + www.error);
 			AssetBundle bundle = www.assetBundle;
-			if (AssetName == "")
+			if (AssetName == "") {
 				Instantiate (bundle.mainAsset);
+				_assetLoaded = false;
+			}
 			else {
 
 				string[] scenePaths = bundle.GetAllScenePaths ();
@@ -145,11 +166,8 @@ public class CameraRaycasting : MonoBehaviour {
 					Debug.Log (scenePath);
 				}
 				UnityEngine.SceneManagement.SceneManager.LoadScene("advert");
+				_assetLoaded = true;
 			}
-			// Unload the AssetBundles compressed contents to conserve memory
-			//WTF causing camera problem
-			//bundle.Unload(false);
-
 		} // memory is freed from the web stream (www.Dispose() gets called implicitly)
 	}
 }
