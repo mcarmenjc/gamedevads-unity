@@ -18,7 +18,7 @@ public class CameraRaycasting : MonoBehaviour {
 	private Vector3 _lastMouse = new Vector3(255, 255, 255); //kind of in the middle of the screen, rather than at the top (play)
 	private float _totalRun= 1.0f;
 	private float _lockTime = 2.0f;
-	private float _impressionTime = 1.0f;
+	private float _impressionTime = 3.0f;
 	private float _runningTime = 0f;
 	private bool _assetLoaded = false;
 
@@ -40,11 +40,11 @@ public class CameraRaycasting : MonoBehaviour {
 
 	private void PollControls()
 	{
-		//_lastMouse = Input.mousePosition - _lastMouse ;
-		//_lastMouse = new Vector3(-_lastMouse.y * _camSens, _lastMouse.x * _camSens, 0 );
-		//_lastMouse = new Vector3(transform.eulerAngles.x + _lastMouse.x , transform.eulerAngles.y + _lastMouse.y, 0);
-		//transform.eulerAngles = _lastMouse;
-		//_lastMouse =  Input.mousePosition;
+		_lastMouse = Input.mousePosition - _lastMouse ;
+		_lastMouse = new Vector3(-_lastMouse.y * _camSens, _lastMouse.x * _camSens, 0 );
+		_lastMouse = new Vector3(transform.eulerAngles.x + _lastMouse.x , transform.eulerAngles.y + _lastMouse.y, 0);
+		transform.eulerAngles = _lastMouse;
+		_lastMouse =  Input.mousePosition;
 		//Mouse  camera angle done.  
 
 		//Keyboard commands
@@ -83,13 +83,9 @@ public class CameraRaycasting : MonoBehaviour {
 			if (_lastSelectedObject.tag.Contains ("AdSurface")) {
 				loadBanner.RegisterImpression ();
 			}
-
+			Debug.Log ("dssfdgs");
 			if (_runningTime >= _impressionTime && _assetLoaded) {
-				_assetLoaded = false;
-				_runningTime = 0f;
-				SceneManager.LoadScene ("lobby");
-				_camera.position = SavedCamera.Position;
-				_camera.forward = SavedCamera.Direction;
+				LoadMainScene ();
 			}
 			if (_runningTime >= _lockTime && !_assetLoaded) {
 				_runningTime = 0f;
@@ -105,6 +101,14 @@ public class CameraRaycasting : MonoBehaviour {
 				_lastSelectedObject.GetComponent<Renderer> ().material.color = Color.white;
 			}
 		}
+	}
+
+	private void LoadMainScene(){
+		_assetLoaded = false;
+		_runningTime = 0f;
+		SceneManager.LoadScene ("lobby");
+		_camera.position = SavedCamera.Position;
+		_camera.forward = SavedCamera.Direction;
 	}
 
 	private void StartLoadAssetBundles(LoadBanner loadBanner)
@@ -156,8 +160,7 @@ public class CameraRaycasting : MonoBehaviour {
 				throw new Exception("WWW download had an error:" + www.error);
 			AssetBundle bundle = www.assetBundle;
 			if (AssetName == "") {
-				Instantiate (bundle.mainAsset);
-				_assetLoaded = false;
+				LoadMainScene ();
 			}
 			else {
 
